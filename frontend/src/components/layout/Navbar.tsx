@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight, Sparkles } from 'lucide-react';
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import { Button } from '../ui/Button';
 import { cn } from '../../lib/utils';
 
@@ -88,6 +89,29 @@ const Navbar = () => {
                                 Generate <ArrowRight size={14} className="ml-2" />
                             </Button>
                         </Link>
+
+                        {/* Clerk Auth Buttons */}
+                        <SignedOut>
+                            <Link to="/sign-in" className="hidden md:block">
+                                <Button size="sm" variant="outline">
+                                    Sign In
+                                </Button>
+                            </Link>
+                        </SignedOut>
+
+                        <SignedIn>
+                            <UserButton
+                                appearance={{
+                                    elements: {
+                                        avatarBox: "w-9 h-9 ring-2 ring-peach-500/20 hover:ring-peach-500/40 transition-all",
+                                        userButtonPopoverCard: "shadow-2xl rounded-2xl",
+                                        userButtonPopoverActionButton: "hover:bg-primary-50",
+                                    },
+                                }}
+                                afterSignOutUrl="/"
+                            />
+                        </SignedIn>
+
                         <button
                             className="lg:hidden w-9 h-9 flex items-center justify-center text-primary-900 bg-primary-100 rounded-full hover:bg-primary-200 transition-colors"
                             onClick={() => setIsOpen(!isOpen)}
@@ -124,13 +148,39 @@ const Navbar = () => {
                                     {link.name}
                                 </Link>
                             ))}
-                            <div className="pt-4">
+                            <div className="pt-4 space-y-3">
                                 <Link to="/generate" className="w-full">
                                     <Button className="w-full" variant="primary">
                                         <Sparkles size={16} className="mr-2" />
                                         Generate Image
                                     </Button>
                                 </Link>
+
+                                <SignedOut>
+                                    <Link to="/sign-in" className="w-full">
+                                        <Button className="w-full" variant="outline">
+                                            Sign In
+                                        </Button>
+                                    </Link>
+                                    <Link to="/sign-up" className="w-full">
+                                        <Button className="w-full" variant="primary">
+                                            Sign Up
+                                        </Button>
+                                    </Link>
+                                </SignedOut>
+
+                                <SignedIn>
+                                    <div className="flex items-center justify-center pt-2">
+                                        <UserButton
+                                            appearance={{
+                                                elements: {
+                                                    avatarBox: "w-10 h-10 ring-2 ring-peach-500/20",
+                                                },
+                                            }}
+                                            afterSignOutUrl="/"
+                                        />
+                                    </div>
+                                </SignedIn>
                             </div>
                         </div>
                     </motion.div>

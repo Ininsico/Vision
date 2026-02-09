@@ -38,7 +38,7 @@ const Footer = () => {
                     {/* Brand Section */}
                     <div className="lg:col-span-2">
                         <div className="flex items-center space-x-3 mb-4">
-                            <img src="/Logo.svg" alt="Vision Logo" className="w-10 h-10" />
+                            <img src="/Ininsicologo.png" alt="Vision Logo" className="w-10 h-10" />
                             <span className="text-2xl font-bold font-display">Vision</span>
                         </div>
                         <p className="text-primary-200 mb-6 max-w-sm">
