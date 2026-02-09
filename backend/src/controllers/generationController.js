@@ -1,23 +1,33 @@
 import Generation from '../models/Generation.js';
 import User from '../models/User.js';
+import visionAI from '../services/visionAI.js';
 
-// Create new generation
-export const createGeneration = async (req, res) => {
+// Generate new image with Vision AI
+export const generateImage = async (req, res) => {
     try {
-        const { prompt, negativePrompt, imageUrl, parameters } = req.body;
+        const { prompt, negativePrompt, parameters } = req.body;
 
-        if (!prompt || !imageUrl) {
-            return res.status(400).json({ error: 'Prompt and image URL are required' });
+        if (!prompt) {
+            return res.status(400).json({ error: 'Prompt is required' });
         }
 
-        // Create generation
+        console.log(`🎨 User ${req.user.email} generating image...`);
+
+        // Generate image using Vision AI service
+        const result = await visionAI.generateImage(prompt, {
+            ...parameters,
+            negativePrompt
+        });
+
+        // Create generation record
         const generation = await Generation.create({
             userId: req.user._id,
             clerkId: req.user.clerkId,
             prompt,
-            negativePrompt,
-            imageUrl,
-            parameters: parameters || {},
+            negativePrompt: negativePrompt || '',
+            imageUrl: result.url,
+            filename: result.filename,
+            parameters: result.parameters,
             status: 'completed'
         });
 
@@ -27,11 +37,20 @@ export const createGeneration = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            generation
+            generation: {
+                id: generation._id,
+                prompt: generation.prompt,
+                imageUrl: generation.imageUrl,
+                parameters: generation.parameters,
+                createdAt: generation.createdAt
+            }
         });
     } catch (error) {
-        console.error('Create generation error:', error);
-        res.status(500).json({ error: 'Failed to create generation' });
+        console.error('Generate image error:', error);
+        res.status(500).json({
+            error: 'Failed to generate image',
+            message: error.message
+        });
     }
 };
 
@@ -44,6 +63,7 @@ export const getUserGenerations = async (req, res) => {
             .sort({ createdAt: -1 })
             .limit(limit * 1)
             .skip((page - 1) * limit)
+            .select('-filename')
             .exec();
 
         const count = await Generation.countDocuments({ userId: req.user._id });
@@ -51,7 +71,7 @@ export const getUserGenerations = async (req, res) => {
         res.json({
             generations,
             totalPages: Math.ceil(count / limit),
-            currentPage: page,
+            currentPage: parseInt(page),
             total: count
         });
     } catch (error) {
@@ -102,6 +122,11 @@ export const deleteUserGeneration = async (req, res) => {
         // Check if user owns this generation
         if (generation.userId.toString() !== req.user._id.toString()) {
             return res.status(403).json({ error: 'Access denied' });
+        }
+
+        // Delete image file
+        if (generation.filename) {
+            visionAI.deleteImage(generation.filename);
         }
 
         await generation.deleteOne();
@@ -163,7 +188,7 @@ export const getPublicGenerations = async (req, res) => {
             .populate('userId', 'firstName lastName profileImage')
             .sort({ createdAt: -1 })
             .limit(parseInt(limit))
-            .select('-cloudinaryId');
+            .select('-filename');
 
         res.json({ generations });
     } catch (error) {

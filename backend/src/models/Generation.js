@@ -21,7 +21,10 @@ const generationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    cloudinaryId: String,
+    filename: {
+        type: String,
+        required: true
+    },
     parameters: {
         width: Number,
         height: Number,

@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-    createGeneration,
+    generateImage,
     getUserGenerations,
     getGeneration,
     deleteUserGeneration,
@@ -15,7 +15,7 @@ const router = express.Router();
 router.get('/public', getPublicGenerations);
 
 // Protected routes (require Clerk authentication)
-router.post('/', requireAuth, createGeneration);
+router.post('/generate', requireAuth, generateImage);
 router.get('/my', requireAuth, getUserGenerations);
 router.get('/:id', requireAuth, getGeneration);
 router.delete('/:id', requireAuth, deleteUserGeneration);
