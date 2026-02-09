@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight, Sparkles } from 'lucide-react';
@@ -19,8 +19,6 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Home', href: '/' },
-        { name: 'Generate', href: '/generate' },
-        { name: 'Dashboard', href: '/dashboard' },
         { name: 'Docs', href: '/docs' },
         { name: 'Contact', href: '/contact' },
     ];
@@ -28,22 +26,15 @@ const Navbar = () => {
     return (
         <nav
             className={cn(
-                "fixed top-0 w-full z-[100] transition-all duration-500",
-                scrolled ? "py-4" : "py-6"
+                "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+                scrolled || isOpen ? "bg-white/80 backdrop-blur-md border-b border-primary-100 py-4" : "bg-transparent py-6"
             )}
         >
             <div className="max-w-7xl mx-auto px-6">
-                <div
-                    className={cn(
-                        "relative flex justify-between items-center px-8 py-3 rounded-full transition-all duration-500 border",
-                        scrolled
-                            ? "bg-primary-50/80 backdrop-blur-md shadow-lg border-primary-200/50"
-                            : "bg-primary-50 shadow-md border-transparent"
-                    )}
-                >
+                <div className="flex items-center justify-between">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center space-x-3 group">
-                        <div className="relative w-10 h-10 group-hover:scale-105 transition-transform filter drop-shadow-sm">
+                    <Link to="/" className="flex items-center gap-2 group">
+                        <div className="w-10 h-10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                             <img
                                 src="/Ininsicologo.png"
                                 alt="Vision Logo"
@@ -79,48 +70,39 @@ const Navbar = () => {
                         ))}
                     </div>
 
-                    {/* Controls */}
-                    <div className="flex items-center space-x-3">
-                        <Link to="/generate">
-                            <Button
-                                size="sm"
-                                variant="primary"
-                                className="hidden md:flex"
-                            >
-                                <Sparkles size={16} className="mr-2" />
-                                Generate <ArrowRight size={14} className="ml-2" />
-                            </Button>
-                        </Link>
-
-                        {/* Clerk Auth Buttons */}
+                    {/* Auth Buttons */}
+                    <div className="hidden lg:flex items-center space-x-4">
                         <SignedOut>
-                            <Link to="/sign-in" className="hidden md:block">
-                                <Button size="sm" variant="outline">
+                            <Link to="/sign-in">
+                                <Button variant="ghost" className="text-primary-600 hover:text-primary-900">
                                     Sign In
                                 </Button>
                             </Link>
+                            <Link to="/sign-up">
+                                <Button variant="primary" className="shadow-lg shadow-peach-500/20">
+                                    Get Started
+                                    <ArrowRight className="ml-2 w-4 h-4" />
+                                </Button>
+                            </Link>
                         </SignedOut>
-
                         <SignedIn>
-                            <UserButton
-                                appearance={{
-                                    elements: {
-                                        avatarBox: "w-9 h-9 ring-2 ring-peach-500/20 hover:ring-peach-500/40 transition-all",
-                                        userButtonPopoverCard: "shadow-2xl rounded-2xl",
-                                        userButtonPopoverActionButton: "hover:bg-primary-50",
-                                    },
-                                }}
-                                afterSignOutUrl="/"
-                            />
+                            <Link to="/generate">
+                                <Button variant="primary" className="shadow-lg shadow-peach-500/20">
+                                    Go to App
+                                    <Sparkles className="ml-2 w-4 h-4" />
+                                </Button>
+                            </Link>
+                            <UserButton afterSignOutUrl="/" />
                         </SignedIn>
-
-                        <button
-                            className="lg:hidden w-9 h-9 flex items-center justify-center text-primary-900 bg-primary-100 rounded-full hover:bg-primary-200 transition-colors"
-                            onClick={() => setIsOpen(!isOpen)}
-                        >
-                            {isOpen ? <X size={18} /> : <Menu size={18} />}
-                        </button>
                     </div>
+
+                    {/* Mobile Menu Button */}
+                    <button
+                        className="lg:hidden w-9 h-9 flex items-center justify-center text-primary-900 bg-primary-100 rounded-full hover:bg-primary-200 transition-colors"
+                        onClick={() => setIsOpen(!isOpen)}
+                    >
+                        {isOpen ? <X size={18} /> : <Menu size={18} />}
+                    </button>
                 </div>
             </div>
 
@@ -151,13 +133,6 @@ const Navbar = () => {
                                 </Link>
                             ))}
                             <div className="pt-4 space-y-3">
-                                <Link to="/generate" className="w-full">
-                                    <Button className="w-full" variant="primary">
-                                        <Sparkles size={16} className="mr-2" />
-                                        Generate Image
-                                    </Button>
-                                </Link>
-
                                 <SignedOut>
                                     <Link to="/sign-in" className="w-full">
                                         <Button className="w-full" variant="outline">
@@ -166,12 +141,18 @@ const Navbar = () => {
                                     </Link>
                                     <Link to="/sign-up" className="w-full">
                                         <Button className="w-full" variant="primary">
-                                            Sign Up
+                                            Get Started
                                         </Button>
                                     </Link>
                                 </SignedOut>
 
                                 <SignedIn>
+                                    <Link to="/generate" className="w-full">
+                                        <Button className="w-full" variant="primary">
+                                            <Sparkles size={16} className="mr-2" />
+                                            Go to App
+                                        </Button>
+                                    </Link>
                                     <div className="flex items-center justify-center pt-2">
                                         <UserButton
                                             appearance={{

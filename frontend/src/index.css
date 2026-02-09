@@ -1,16 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-primary: #FDFBF7;
-  --bg-secondary: #F9F5EE;
-  --text-primary: #4A2F1A;
-  --text-secondary: #6B4628;
-  --accent-peach: #EB8C6C;
-  --accent-dark: #8B5E3C;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9f9f9;
+  --text-primary: #004d4d;
+  /* Deep Teal */
+  --text-secondary: #008080;
+  /* Teal Blue */
+  --accent-peach: #008080;
+  /* Teal Blue */
+  --accent-dark: #003333;
+  /* Darker Teal */
 }
 
 * {
@@ -20,7 +24,7 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
@@ -34,14 +38,16 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Outfit', system-ui, sans-serif;
-  font-weight: 700;
+  font-family: 'Instrument Serif', serif;
+  font-weight: 400;
+  /* Serif usually looks better with regular weight */
   line-height: 1.2;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
 }
 
 .font-accent {
-  font-family: 'Outfit', system-ui, sans-serif;
+  font-family: 'Instrument Serif', serif;
 }
 
 /* Smooth scrolling */
@@ -121,18 +127,19 @@ html {
 
 /* Glassmorphism effect */
 .glass {
-  background: rgba(253, 251, 247, 0.7);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 77, 77, 0.1);
 }
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #EB8C6C 0%, #C85A35 50%, #8B5E3C 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-secondary);
+  /* Pure Teal Blue */
+  background: none;
+  -webkit-text-fill-color: var(--text-secondary);
+  background-clip: unset;
 }
 
 /* Button hover effects */
@@ -142,7 +149,7 @@ html {
 
 .btn-hover-lift:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(139, 94, 60, 0.3);
+  box-shadow: 0 10px 25px -5px rgba(0, 77, 77, 0.2);
 }
 
 /* Card styles */
@@ -152,9 +159,11 @@ html {
   padding: 2rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
+  border: 1px solid rgba(0, 77, 77, 0.05);
 }
 
 .card:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 77, 77, 0.15);
   transform: translateY(-4px);
+  border-color: var(--text-secondary);
 }

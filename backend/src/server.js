@@ -1,6 +1,9 @@
+import dotenv from 'dotenv';
+// Load environment variables first
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import connectDB from './config/database.js';
@@ -14,9 +17,6 @@ import userRoutes from './routes/users.js';
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Load environment variables
-dotenv.config();
 
 // Initialize express app
 const app = express();

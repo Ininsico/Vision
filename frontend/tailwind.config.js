@@ -7,35 +7,39 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Primary is now the Deep Teal scale
         primary: {
-          50: '#FDFBF7',
-          100: '#F9F5EE',
-          200: '#F3E9DD',
-          300: '#E8D5C4',
-          400: '#D9BBA4',
-          500: '#C9A084',
-          600: '#B88565',
-          700: '#8B5E3C',
-          800: '#6B4628',
-          900: '#4A2F1A',
+          50: '#f0fdfd',
+          100: '#ccfbfb',
+          200: '#99f6f6',
+          300: '#5ceded',
+          400: '#22dcdc',
+          500: '#06b6b6', // Teal Blue
+          600: '#049191',
+          700: '#037474',
+          800: '#025b5b', // Deep Teal
+          900: '#013d3d', // Very Deep Teal
+          950: '#002525',
         },
+        // Peach is now Pure White / Transparent placeholder
         peach: {
-          50: '#FEF7F4',
-          100: '#FCEEE8',
-          200: '#F9DDD1',
-          300: '#F5C4B0',
-          400: '#F0A88E',
-          500: '#EB8C6C',
-          600: '#E6704A',
-          700: '#C85A35',
-          800: '#A04628',
-          900: '#78331E',
+          50: '#ffffff',
+          100: '#ffffff',
+          200: '#ffffff',
+          300: '#ffffff',
+          400: '#ffffff',
+          500: '#ffffff',
+          600: '#ffffff',
+          700: '#ffffff',
+          800: '#ffffff',
+          900: '#ffffff',
         },
       },
       fontFamily: {
-        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
-        accent: ['Syne', 'system-ui', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+        body: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+        accent: ['Instrument Serif', 'Georgia', 'serif'],
+        serif: ['Instrument Serif', 'Georgia', 'serif'],
       },
     },
   },

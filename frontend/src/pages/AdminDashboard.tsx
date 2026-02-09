@@ -5,7 +5,7 @@ import {
     Users, Image as ImageIcon, CheckCircle, Clock,
     Star, Trash2, LogOut, TrendingUp, Eye
 } from 'lucide-react';
-import { adminAPI, setAuthToken } from '../services/api';
+import { adminAPI, setAuthToken, BASE_URL } from '../services/api';
 import { Button } from '../components/ui/Button';
 
 const AdminDashboard = () => {
@@ -125,14 +125,16 @@ const AdminDashboard = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="card bg-gradient-to-br from-blue-500 to-blue-600 text-white"
+                        className="card bg-white border-l-4 border-blue-500 shadow-sm"
                     >
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between p-2">
                             <div>
-                                <p className="text-blue-100 text-sm mb-1">Total Users</p>
-                                <p className="text-3xl font-bold">{stats?.totalUsers || 0}</p>
+                                <p className="text-gray-500 text-sm font-medium uppercase tracking-wider mb-1">Total Users</p>
+                                <p className="text-3xl font-bold text-gray-800">{stats?.totalUsers || 0}</p>
                             </div>
-                            <Users size={40} className="text-blue-200" />
+                            <div className="p-3 bg-blue-50 rounded-full">
+                                <Users size={24} className="text-blue-600" />
+                            </div>
                         </div>
                     </motion.div>
 
@@ -140,14 +142,16 @@ const AdminDashboard = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="card bg-gradient-to-br from-purple-500 to-purple-600 text-white"
+                        className="card bg-white border-l-4 border-purple-500 shadow-sm"
                     >
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between p-2">
                             <div>
-                                <p className="text-purple-100 text-sm mb-1">Total Generations</p>
-                                <p className="text-3xl font-bold">{stats?.totalGenerations || 0}</p>
+                                <p className="text-gray-500 text-sm font-medium uppercase tracking-wider mb-1">Generations</p>
+                                <p className="text-3xl font-bold text-gray-800">{stats?.totalGenerations || 0}</p>
                             </div>
-                            <ImageIcon size={40} className="text-purple-200" />
+                            <div className="p-3 bg-purple-50 rounded-full">
+                                <ImageIcon size={24} className="text-purple-600" />
+                            </div>
                         </div>
                     </motion.div>
 
@@ -155,14 +159,16 @@ const AdminDashboard = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="card bg-gradient-to-br from-green-500 to-green-600 text-white"
+                        className="card bg-white border-l-4 border-green-500 shadow-sm"
                     >
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between p-2">
                             <div>
-                                <p className="text-green-100 text-sm mb-1">Approved</p>
-                                <p className="text-3xl font-bold">{stats?.approvedGenerations || 0}</p>
+                                <p className="text-gray-500 text-sm font-medium uppercase tracking-wider mb-1">Approved</p>
+                                <p className="text-3xl font-bold text-gray-800">{stats?.approvedGenerations || 0}</p>
                             </div>
-                            <CheckCircle size={40} className="text-green-200" />
+                            <div className="p-3 bg-green-50 rounded-full">
+                                <CheckCircle size={24} className="text-green-600" />
+                            </div>
                         </div>
                     </motion.div>
 
@@ -170,14 +176,16 @@ const AdminDashboard = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
-                        className="card bg-gradient-to-br from-orange-500 to-orange-600 text-white"
+                        className="card bg-white border-l-4 border-orange-500 shadow-sm"
                     >
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between p-2">
                             <div>
-                                <p className="text-orange-100 text-sm mb-1">Pending</p>
-                                <p className="text-3xl font-bold">{stats?.pendingApproval || 0}</p>
+                                <p className="text-gray-500 text-sm font-medium uppercase tracking-wider mb-1">Pending</p>
+                                <p className="text-3xl font-bold text-gray-800">{stats?.pendingApproval || 0}</p>
                             </div>
-                            <Clock size={40} className="text-orange-200" />
+                            <div className="p-3 bg-orange-50 rounded-full">
+                                <Clock size={24} className="text-orange-600" />
+                            </div>
                         </div>
                     </motion.div>
                 </div>
@@ -193,8 +201,8 @@ const AdminDashboard = () => {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as any)}
                             className={`flex items-center px-4 py-3 font-semibold transition-colors ${activeTab === tab.id
-                                    ? 'text-peach-600 border-b-2 border-peach-600'
-                                    : 'text-primary-600 hover:text-primary-900'
+                                ? 'text-peach-600 border-b-2 border-peach-600'
+                                : 'text-primary-600 hover:text-primary-900'
                                 }`}
                         >
                             <tab.icon className="mr-2" size={18} />
@@ -215,7 +223,7 @@ const AdminDashboard = () => {
                                     <div key={gen._id} className="flex items-center justify-between p-3 bg-primary-50 rounded-xl">
                                         <div className="flex items-center gap-3">
                                             <img
-                                                src={`http://localhost:5000${gen.imageUrl}`}
+                                                src={`${BASE_URL}${gen.imageUrl}`}
                                                 alt={gen.prompt}
                                                 className="w-12 h-12 rounded-lg object-cover"
                                             />
@@ -229,8 +237,8 @@ const AdminDashboard = () => {
                                             </div>
                                         </div>
                                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${gen.approvedForLanding
-                                                ? 'bg-green-100 text-green-700'
-                                                : 'bg-orange-100 text-orange-700'
+                                            ? 'bg-green-100 text-green-700'
+                                            : 'bg-orange-100 text-orange-700'
                                             }`}>
                                             {gen.approvedForLanding ? 'Approved' : 'Pending'}
                                         </span>
@@ -262,7 +270,7 @@ const AdminDashboard = () => {
                                 <div key={gen._id} className="card">
                                     <div className="aspect-square bg-primary-100 rounded-xl overflow-hidden mb-3">
                                         <img
-                                            src={`http://localhost:5000${gen.imageUrl}`}
+                                            src={`${BASE_URL}${gen.imageUrl}`}
                                             alt={gen.prompt}
                                             className="w-full h-full object-cover"
                                         />

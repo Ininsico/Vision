@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { Image as ImageIcon, Trash2, Eye, Calendar, Sparkles } from 'lucide-react';
-import { generationAPI, userAPI, setAuthToken } from '../services/api';
+import { generationAPI, userAPI, setAuthToken, BASE_URL } from '../services/api';
 import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
 
@@ -95,35 +95,35 @@ const Dashboard = () => {
 
                     {/* Stats Cards */}
                     <div className="grid md:grid-cols-3 gap-6">
-                        <div className="card bg-gradient-to-br from-peach-500 to-peach-600 text-white">
+                        <div className="card bg-white border border-primary-100 shadow-lg group hover:border-primary-300 transition-all duration-300">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-peach-100 text-sm mb-1">Total Generations</p>
-                                    <p className="text-4xl font-bold">{userProfile?.generationsCount || 0}</p>
+                                    <p className="text-primary-500 text-sm font-medium mb-1 uppercase tracking-wider">Total Generations</p>
+                                    <p className="text-4xl font-bold text-primary-900">{userProfile?.generationsCount || 0}</p>
                                 </div>
-                                <ImageIcon size={48} className="text-peach-200" />
+                                <ImageIcon size={48} className="text-primary-200 group-hover:text-primary-500 transition-colors duration-300" />
                             </div>
                         </div>
 
-                        <div className="card bg-gradient-to-br from-primary-600 to-primary-700 text-white">
+                        <div className="card bg-white border border-primary-100 shadow-lg group hover:border-primary-300 transition-all duration-300">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-primary-100 text-sm mb-1">Member Since</p>
-                                    <p className="text-xl font-bold">
+                                    <p className="text-primary-500 text-sm font-medium mb-1 uppercase tracking-wider">Member Since</p>
+                                    <p className="text-xl font-bold text-primary-900">
                                         {userProfile?.createdAt ? new Date(userProfile.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'N/A'}
                                     </p>
                                 </div>
-                                <Calendar size={48} className="text-primary-200" />
+                                <Calendar size={48} className="text-primary-200 group-hover:text-primary-500 transition-colors duration-300" />
                             </div>
                         </div>
 
-                        <div className="card bg-gradient-to-br from-purple-500 to-purple-600 text-white">
+                        <div className="card bg-white border border-primary-100 shadow-lg group hover:border-primary-300 transition-all duration-300">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-purple-100 text-sm mb-1">Account Status</p>
-                                    <p className="text-2xl font-bold">Active</p>
+                                    <p className="text-primary-500 text-sm font-medium mb-1 uppercase tracking-wider">Account Status</p>
+                                    <p className="text-2xl font-bold text-primary-900">Active</p>
                                 </div>
-                                <Sparkles size={48} className="text-purple-200" />
+                                <Sparkles size={48} className="text-primary-200 group-hover:text-primary-500 transition-colors duration-300" />
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@ const Dashboard = () => {
                                     >
                                         <div className="aspect-square bg-primary-100 rounded-xl overflow-hidden mb-4">
                                             <img
-                                                src={`http://localhost:5000${gen.imageUrl}`}
+                                                src={`${BASE_URL}${gen.imageUrl}`}
                                                 alt={gen.prompt}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                             />
@@ -183,7 +183,7 @@ const Dashboard = () => {
 
                                         <div className="flex gap-2">
                                             <a
-                                                href={`http://localhost:5000${gen.imageUrl}`}
+                                                href={`${BASE_URL}${gen.imageUrl}`}
                                                 download
                                                 className="flex-1"
                                             >

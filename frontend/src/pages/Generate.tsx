@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Wand2, Download, Loader2, Settings } from 'lucide-react';
 import { useAuth } from '@clerk/clerk-react';
-import { generationAPI, setAuthToken } from '../services/api';
+import { generationAPI, setAuthToken, BASE_URL } from '../services/api';
 import { Button } from '../components/ui/Button';
 
 const Generate = () => {
@@ -60,7 +60,7 @@ const Generate = () => {
     const handleDownload = () => {
         if (generatedImage) {
             const link = document.createElement('a');
-            link.href = `http://localhost:5000${generatedImage.imageUrl}`;
+            link.href = `${BASE_URL}${generatedImage.imageUrl}`;
             link.download = `vision_${generatedImage.id}.png`;
             link.click();
         }
@@ -257,7 +257,7 @@ const Generate = () => {
                                 </div>
                             ) : generatedImage ? (
                                 <img
-                                    src={`http://localhost:5000${generatedImage.imageUrl}`}
+                                    src={`${BASE_URL}${generatedImage.imageUrl}`}
                                     alt={generatedImage.prompt}
                                     className="w-full h-full object-contain"
                                 />

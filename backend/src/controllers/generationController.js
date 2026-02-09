@@ -7,17 +7,28 @@ export const generateImage = async (req, res) => {
     try {
         const { prompt, negativePrompt, parameters } = req.body;
 
+        console.log('📥 Generation request received:', {
+            user: req.user?.email,
+            prompt: prompt?.substring(0, 50) + '...',
+            hasParameters: !!parameters
+        });
+
         if (!prompt) {
+            console.log('❌ No prompt provided');
             return res.status(400).json({ error: 'Prompt is required' });
         }
 
         console.log(`🎨 User ${req.user.email} generating image...`);
+        console.log(`📝 Full prompt: ${prompt}`);
 
         // Generate image using Vision AI service
+        console.log('🚀 Calling Vision AI service...');
         const result = await visionAI.generateImage(prompt, {
             ...parameters,
             negativePrompt
         });
+
+        console.log('✅ Vision AI generation successful:', result.filename);
 
         // Create generation record
         const generation = await Generation.create({
@@ -31,9 +42,13 @@ export const generateImage = async (req, res) => {
             status: 'completed'
         });
 
+        console.log('💾 Generation saved to database:', generation._id);
+
         // Update user's generation count
         req.user.generationsCount += 1;
         await req.user.save();
+
+        console.log('✨ Generation complete!');
 
         res.status(201).json({
             success: true,
@@ -46,7 +61,8 @@ export const generateImage = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Generate image error:', error);
+        console.error('❌ Generate image error:', error);
+        console.error('Error stack:', error.stack);
         res.status(500).json({
             error: 'Failed to generate image',
             message: error.message
@@ -179,7 +195,9 @@ export const getPublicGenerations = async (req, res) => {
     try {
         const { featured, limit = 8 } = req.query;
 
-        const query = { approvedForLanding: true };
+        // Show all completed generations for now (simplify for demo/production)
+        const query = { status: 'completed' };
+        // const query = { approvedForLanding: true };
         if (featured === 'true') {
             query.isFeatured = true;
         }

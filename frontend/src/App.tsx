@@ -1,8 +1,9 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ClerkProvider } from '@clerk/clerk-react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-react';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
+import DashboardLayout from './components/layout/DashboardLayout';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Docs from './pages/Docs';
@@ -34,7 +35,24 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
-          {/* Main routes with navbar/footer */}
+          {/* Protected App Routes (Sidebar Layout) */}
+          <Route path="/generate" element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Generate />
+              </DashboardLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Dashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Public Routes (Navbar/Footer Layout) */}
           <Route
             path="/*"
             element={
@@ -42,11 +60,21 @@ function App() {
                 <Navbar />
                 <main className="flex-grow">
                   <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/generate" element={<Generate />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
+                    {/* If signed in, redirect Home to Generate */}
+                    <Route path="/" element={
+                      <>
+                        <SignedIn>
+                          <Navigate to="/generate" replace />
+                        </SignedIn>
+                        <SignedOut>
+                          <Home />
+                        </SignedOut>
+                      </>
+                    } />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/docs" element={<Docs />} />
+                    {/* Catch-all for 404s or unhandled paths */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </main>
                 <Footer />

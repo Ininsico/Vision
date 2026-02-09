@@ -6,11 +6,11 @@ import { ArrowLeft, Sparkles } from 'lucide-react';
 
 const SignInPage = () => {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-primary-50 via-peach-50 to-primary-100 flex items-center justify-center px-6 py-20">
+        <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100 flex items-center justify-center px-6 py-20">
             {/* Background Elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-20 left-10 w-72 h-72 bg-peach-300/20 rounded-full blur-3xl animate-float" />
-                <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-300/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+                <div className="absolute top-20 left-10 w-72 h-72 bg-primary-300/20 rounded-full blur-3xl animate-float" />
+                <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
             </div>
 
             <div className="w-full max-w-6xl relative z-10">
@@ -42,7 +42,7 @@ const SignInPage = () => {
 
                         <div className="space-y-4">
                             <div className="flex items-start space-x-3">
-                                <div className="w-8 h-8 rounded-full bg-peach-500 flex items-center justify-center flex-shrink-0 mt-1">
+                                <div className="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0 mt-1">
                                     <Sparkles size={16} className="text-white" />
                                 </div>
                                 <div>
@@ -51,7 +51,7 @@ const SignInPage = () => {
                                 </div>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <div className="w-8 h-8 rounded-full bg-peach-500 flex items-center justify-center flex-shrink-0 mt-1">
+                                <div className="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0 mt-1">
                                     <Sparkles size={16} className="text-white" />
                                 </div>
                                 <div>
@@ -60,7 +60,7 @@ const SignInPage = () => {
                                 </div>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <div className="w-8 h-8 rounded-full bg-peach-500 flex items-center justify-center flex-shrink-0 mt-1">
+                                <div className="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center flex-shrink-0 mt-1">
                                     <Sparkles size={16} className="text-white" />
                                 </div>
                                 <div>
@@ -110,16 +110,16 @@ const SignInPage = () => {
                                         card: "bg-white shadow-2xl rounded-3xl border-0",
                                         headerTitle: "font-display text-2xl font-bold text-primary-900",
                                         headerSubtitle: "text-primary-600",
-                                        socialButtonsBlockButton: "bg-white border-2 border-primary-200 hover:border-peach-500 hover:bg-primary-50 text-primary-900 font-medium transition-all rounded-xl",
+                                        socialButtonsBlockButton: "bg-white border-2 border-primary-200 hover:border-primary-500 hover:bg-primary-50 text-primary-900 font-medium transition-all rounded-xl",
                                         socialButtonsBlockButtonText: "font-medium",
                                         dividerLine: "bg-primary-200",
                                         dividerText: "text-primary-500",
                                         formFieldLabel: "text-primary-900 font-semibold",
-                                        formFieldInput: "border-2 border-primary-200 focus:border-peach-500 rounded-xl text-primary-900",
-                                        formButtonPrimary: "bg-gradient-to-r from-peach-500 to-peach-600 hover:from-peach-600 hover:to-peach-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all",
-                                        footerActionLink: "text-peach-600 hover:text-peach-700 font-semibold",
+                                        formFieldInput: "border-2 border-primary-200 focus:border-primary-500 rounded-xl text-primary-900",
+                                        formButtonPrimary: "bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all border-none",
+                                        footerActionLink: "text-primary-600 hover:text-primary-800 font-semibold",
                                         identityPreviewText: "text-primary-900",
-                                        identityPreviewEditButton: "text-peach-600 hover:text-peach-700",
+                                        identityPreviewEditButton: "text-primary-600 hover:text-primary-800",
                                     },
                                 }}
                                 routing="path"
@@ -131,7 +131,7 @@ const SignInPage = () => {
 
                         <p className="mt-6 text-sm text-primary-600 text-center">
                             Don't have an account?{' '}
-                            <Link to="/sign-up" className="text-peach-600 hover:text-peach-700 font-semibold">
+                            <Link to="/sign-up" className="text-primary-700 hover:text-primary-900 font-semibold">
                                 Sign up for free
                             </Link>
                         </p>
