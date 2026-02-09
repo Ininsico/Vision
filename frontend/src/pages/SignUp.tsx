@@ -1,4 +1,3 @@
-import React from 'react';
 import { SignUp } from '@clerk/clerk-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';

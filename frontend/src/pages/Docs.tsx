@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Book, Code, Zap, Shield, Sparkles, Copy, Check, ChevronRight, Terminal, FileCode } from 'lucide-react';
 import { Button } from '../components/ui/Button';
