@@ -199,9 +199,12 @@ export const getPublicGenerations = async (req, res) => {
     try {
         const { featured, limit = 8 } = req.query;
 
-        // Show all completed generations for now (simplify for demo/production)
-        const query = { status: 'completed' };
-        // const query = { approvedForLanding: true };
+        // Show ONLY approved generations
+        const query = {
+            status: 'completed',
+            approvedForLanding: true
+        };
+
         if (featured === 'true') {
             query.isFeatured = true;
         }
