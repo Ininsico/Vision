@@ -26,12 +26,12 @@ const Docs = () => {
 • Text Encoder: CLIP ViT-L/14 (768-dim embeddings)
 • Diffusion Model: U-Net with cross-attention layers
 • Latent Space: 512x512 → 64x64 compressed representation
-• Denoising Steps: 50 iterations (configurable)
+• Denoising Steps: 30 iterations (configurable)
 • Guidance Scale: 7.5 (classifier-free guidance)
 • VAE Decoder: Converts latent → high-res output
 
 Training Dataset:
-• 600M+ text-image pairs
+• 10M+ text-image pairs
 • Diverse artistic styles and photorealistic content
 • Filtered for quality and ethical considerations`,
                 },
