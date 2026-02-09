@@ -36,9 +36,9 @@ const Home = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <h1 className="text-4xl sm:text-5xl md:text-8xl font-bold mb-4 md:mb-8 font-display text-primary-900 leading-tight">
-                            Imagine.<br />
-                            <span className="text-primary-600">Create.</span><br />
-                            <span className="text-primary-500">Inspire.</span>
+                            Imagine<br />
+                            <span className="text-primary-600">Create</span><br />
+                            <span className="text-primary-500">Inspire</span>
                         </h1>
 
                         <p className="text-sm sm:text-lg md:text-2xl text-primary-700 mb-6 md:mb-10 max-w-lg leading-relaxed">
