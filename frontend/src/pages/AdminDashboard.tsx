@@ -223,7 +223,7 @@ const AdminDashboard = () => {
                                     <div key={gen._id} className="flex items-center justify-between p-3 bg-primary-50 rounded-xl">
                                         <div className="flex items-center gap-3">
                                             <img
-                                                src={`${BASE_URL}${gen.imageUrl}`}
+                                                src={gen.imageUrl.startsWith('data:') || gen.imageUrl.startsWith('http') ? gen.imageUrl : `${BASE_URL}${gen.imageUrl}`}
                                                 alt={gen.prompt}
                                                 className="w-12 h-12 rounded-lg object-cover"
                                             />
@@ -270,7 +270,7 @@ const AdminDashboard = () => {
                                 <div key={gen._id} className="card">
                                     <div className="aspect-square bg-primary-100 rounded-xl overflow-hidden mb-3">
                                         <img
-                                            src={`${BASE_URL}${gen.imageUrl}`}
+                                            src={gen.imageUrl.startsWith('data:') || gen.imageUrl.startsWith('http') ? gen.imageUrl : `${BASE_URL}${gen.imageUrl}`}
                                             alt={gen.prompt}
                                             className="w-full h-full object-cover"
                                         />

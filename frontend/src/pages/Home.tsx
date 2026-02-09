@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Loader2, Image as ImageIcon } from 'lucide-react';
@@ -117,7 +117,7 @@ const Home = () => {
                                         className="group relative aspect-square rounded-xl md:rounded-2xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 bg-primary-50"
                                     >
                                         <img
-                                            src={`${BASE_URL}${gen.imageUrl}`}
+                                            src={gen.imageUrl.startsWith('data:') || gen.imageUrl.startsWith('http') ? gen.imageUrl : `${BASE_URL}${gen.imageUrl}`}
                                             alt={gen.prompt}
                                             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                             loading="lazy"

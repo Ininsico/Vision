@@ -60,7 +60,7 @@ const Generate = () => {
     const handleDownload = () => {
         if (generatedImage) {
             const link = document.createElement('a');
-            link.href = `${BASE_URL}${generatedImage.imageUrl}`;
+            link.href = generatedImage.imageUrl.startsWith('data:') || generatedImage.imageUrl.startsWith('http') ? generatedImage.imageUrl : `${BASE_URL}${generatedImage.imageUrl}`;
             link.download = `vision_${generatedImage.id}.png`;
             link.click();
         }
@@ -257,7 +257,7 @@ const Generate = () => {
                                 </div>
                             ) : generatedImage ? (
                                 <img
-                                    src={`${BASE_URL}${generatedImage.imageUrl}`}
+                                    src={generatedImage.imageUrl.startsWith('data:') || generatedImage.imageUrl.startsWith('http') ? generatedImage.imageUrl : `${BASE_URL}${generatedImage.imageUrl}`}
                                     alt={generatedImage.prompt}
                                     className="w-full h-full object-contain"
                                 />

@@ -160,7 +160,7 @@ const Dashboard = () => {
                                     >
                                         <div className="aspect-square bg-primary-100 rounded-xl overflow-hidden mb-4">
                                             <img
-                                                src={`${BASE_URL}${gen.imageUrl}`}
+                                                src={gen.imageUrl.startsWith('data:') || gen.imageUrl.startsWith('http') ? gen.imageUrl : `${BASE_URL}${gen.imageUrl}`}
                                                 alt={gen.prompt}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                             />
@@ -183,7 +183,7 @@ const Dashboard = () => {
 
                                         <div className="flex gap-2">
                                             <a
-                                                href={`${BASE_URL}${gen.imageUrl}`}
+                                                href={gen.imageUrl.startsWith('data:') || gen.imageUrl.startsWith('http') ? gen.imageUrl : `${BASE_URL}${gen.imageUrl}`}
                                                 download
                                                 className="flex-1"
                                             >

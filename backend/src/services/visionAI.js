@@ -1,6 +1,7 @@
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -8,16 +9,21 @@ const __dirname = path.dirname(__filename);
 
 class VisionAIService {
     constructor() {
-        this.uploadsDir = path.join(__dirname, '../../uploads');
-
-        // Ensure uploads directory exists
-        if (!fs.existsSync(this.uploadsDir)) {
-            fs.mkdirSync(this.uploadsDir, { recursive: true });
+        try {
+            // Try to use persistent storage if available (local dev)
+            this.uploadsDir = path.join(__dirname, '../../uploads');
+            if (!fs.existsSync(this.uploadsDir)) {
+                fs.mkdirSync(this.uploadsDir, { recursive: true });
+            }
+        } catch (error) {
+            // Fallback to temp directory for serverless environments (Vercel)
+            console.warn('⚠️ Cannot write to local uploads dir, using temp dir:', error.message);
+            this.uploadsDir = os.tmpdir();
         }
     }
 
     /**
-     * Generate image using Vision AI (Hugging Face FLUX model)
+     * Generate image using Custom AI Model
      * @param {string} prompt - Text description for image generation
      * @param {object} parameters - Generation parameters
      * @returns {Promise<object>} Generated image data
@@ -29,7 +35,17 @@ class VisionAIService {
             const modelUrl = process.env.HF_MODEL_URL;
 
             if (!hfToken || !modelUrl) {
-                throw new Error('Missing Hugging Face credentials in .env');
+                // For development without API keys, return mock data if configured
+                if (process.env.NODE_ENV === 'development') {
+                    console.warn('⚠️ Missing API keys, returning mock success for development');
+                    return {
+                        success: true,
+                        filename: 'mock-image.png',
+                        url: 'https://placehold.co/1024x1024/png', // Sentinel value
+                        parameters
+                    };
+                }
+                throw new Error('Missing Custom/Hugging Face credentials in .env');
             }
 
             const {
@@ -51,22 +67,21 @@ class VisionAIService {
 
             console.log(`🎨 Parameters: ${widthNum}x${heightNum}, Steps: ${stepsNum}, Guidance: ${guidanceNum}`);
 
-            // Prepare request payload matching the Python script structure
+            // Prepare request payload matching the model API structure
             const payload = {
                 inputs: prompt,
                 parameters: {
                     height: heightNum,
                     width: widthNum,
                     num_inference_steps: stepsNum,
-                    guidance_scale: guidanceNum
+                    guidance_scale: guidanceNum,
+                    negative_prompt: negativePrompt
                 }
             };
 
-            // Only add negative prompt if the model supports it (FLUX-schnell might not, but let's keep optional)
-            // But let's log the payload to be sure
             console.log('📦 Sending payload:', JSON.stringify(payload, null, 2));
 
-            // Call Hugging Face API
+            // Call AI API
             const response = await axios.post(
                 modelUrl,
                 payload,
@@ -91,16 +106,29 @@ class VisionAIService {
             const filename = `vision_${timestamp}_${randomStr}.png`;
             const filepath = path.join(this.uploadsDir, filename);
 
-            // Save image to disk
+            // Save image to temp disk
             fs.writeFileSync(filepath, response.data);
 
             console.log(`✅ Image generated successfully: ${filename}`);
 
+            // Convert to Base64 Data URI for immediate persistence & display
+            // This bypasses the need for persistent local storage or S3 on Vercel
+            const imageBuffer = fs.readFileSync(filepath);
+            const base64Image = Buffer.from(imageBuffer).toString('base64');
+            const dataURI = `data:image/png;base64,${base64Image}`;
+
+            // Clean up temp file to free resources
+            try {
+                fs.unlinkSync(filepath);
+            } catch (e) {
+                console.warn('⚠️ Failed to cleanup temp file:', e.message);
+            }
+
             return {
                 success: true,
                 filename,
-                filepath,
-                url: `/uploads/${filename}`,
+                // Return Data URI to use as the image source directly
+                url: dataURI,
                 size: response.data.length,
                 parameters: {
                     height: heightNum,
@@ -113,53 +141,39 @@ class VisionAIService {
         } catch (error) {
             let errorMessage = error.message;
 
-            // If we have an error response with data (Buffer), decode it to see the real error
+            // comprehensive error handling for API responses
             if (error.response && error.response.data) {
                 try {
-                    // Convert buffer to string
                     const rawError = error.response.data.toString('utf8');
                     console.error('🔴 Raw API Error Response:', rawError);
 
-                    // Try to parse if it's JSON
-                    const errorJson = JSON.parse(rawError);
-                    if (errorJson.error) {
-                        errorMessage = `API Error: ${errorJson.error}`;
-                    } else {
+                    try {
+                        const errorJson = JSON.parse(rawError);
+                        errorMessage = errorJson.error || `API Error: ${rawError}`;
+                    } catch {
                         errorMessage = `API Error: ${rawError}`;
                     }
                 } catch (e) {
-                    errorMessage = `API Error: ${error.response.statusText} (Could not parse error body)`;
+                    errorMessage = `API Error: ${error.response.statusText}`;
                 }
             }
 
             console.error('❌ Vision AI generation error:', errorMessage);
-
             throw new Error(errorMessage);
         }
     }
 
     /**
-     * Delete image file
-     * @param {string} filename - Image filename to delete
+     * Delete image file (unused in Base64 mode but kept for interface compatibility)
+     * @param {string} filename 
      */
     deleteImage(filename) {
-        try {
-            const filepath = path.join(this.uploadsDir, filename);
-            if (fs.existsSync(filepath)) {
-                fs.unlinkSync(filepath);
-                console.log(`🗑️  Deleted image: ${filename}`);
-                return true;
-            }
-            return false;
-        } catch (error) {
-            console.error('Error deleting image:', error);
-            return false;
-        }
+        // No-op for Base64 storage
+        return true;
     }
 
     /**
-     * Get image file path
-     * @param {string} filename - Image filename
+     * Get image file path (unused in Base64 mode)
      */
     getImagePath(filename) {
         return path.join(this.uploadsDir, filename);
