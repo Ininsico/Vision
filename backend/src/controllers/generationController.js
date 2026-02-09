@@ -140,9 +140,13 @@ export const deleteUserGeneration = async (req, res) => {
             return res.status(403).json({ error: 'Access denied' });
         }
 
-        // Delete image file
+        // Delete image file (soft fail if file missing)
         if (generation.filename) {
-            visionAI.deleteImage(generation.filename);
+            try {
+                visionAI.deleteImage(generation.filename);
+            } catch (err) {
+                console.warn(`Could not delete file ${generation.filename}, proceeding with DB deletion.`);
+            }
         }
 
         await generation.deleteOne();

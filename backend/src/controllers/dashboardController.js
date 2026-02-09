@@ -1,5 +1,6 @@
 import Generation from '../models/Generation.js';
 import User from '../models/User.js';
+import visionAI from '../services/visionAI.js';
 
 // Get all generations (admin only)
 export const getAllGenerations = async (req, res) => {
@@ -44,7 +45,8 @@ export const approveGeneration = async (req, res) => {
             return res.status(404).json({ error: 'Generation not found' });
         }
 
-        generation.approvedForLanding = approved;
+        // Ensure boolean type (Fix for approval update)
+        generation.approvedForLanding = approved === true || approved === 'true';
         generation.approvedBy = req.admin._id;
         generation.approvedAt = new Date();
 
@@ -89,11 +91,22 @@ export const deleteGeneration = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const generation = await Generation.findByIdAndDelete(id);
+        const generation = await Generation.findById(id);
 
         if (!generation) {
             return res.status(404).json({ error: 'Generation not found' });
         }
+
+        // Delete image file (soft fail if file missing) - Fix for Vercel crash
+        if (generation.filename) {
+            try {
+                visionAI.deleteImage(generation.filename);
+            } catch (err) {
+                console.warn(`Could not delete file ${generation.filename}, proceeding with DB deletion.`);
+            }
+        }
+
+        await generation.deleteOne();
 
         res.json({
             success: true,
